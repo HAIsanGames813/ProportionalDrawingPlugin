@@ -1,0 +1,57 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<DeployToYMM4 Condition="'$(DeployToYMM4)' == ''">true</DeployToYMM4>
+		<YMM4PluginFolderName Condition="'$(YMM4PluginFolderName)' == '' and '$(SolutionName)' != ''">$(SolutionName)</YMM4PluginFolderName>
+		<YMM4PluginFolderName Condition="'$(YMM4PluginFolderName)' == ''">ProportionalDrawingPlugin</YMM4PluginFolderName>
+		<YMM4PluginDirectory Condition="'$(YMM4PluginDirectory)' == ''">$(YMM4DirPath)user\plugin\$(YMM4PluginFolderName)</YMM4PluginDirectory>
+
+		<!--Pdb内にソースコードのフルパスを含めない-->
+		<RepoRoot>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\'))</RepoRoot>
+		<PathMap>$(RepoRoot)=.</PathMap>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\YukkuriMovieMaker.Generator\YukkuriMovieMaker.Generator\YukkuriMovieMaker.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<AdditionalFiles Include="**/*.csv" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="YukkuriMovieMaker.Controls">
+			<HintPath>$(YMM4DirPath)YukkuriMovieMaker.Controls.dll</HintPath>
+		</Reference>
+		<Reference Include="YukkuriMovieMaker.Plugin">
+			<HintPath>$(YMM4DirPath)YukkuriMovieMaker.Plugin.dll</HintPath>
+		</Reference>
+		<Reference Include="SharpGen.Runtime">
+			<HintPath>$(YMM4DirPath)SharpGen.Runtime.dll</HintPath>
+		</Reference>
+		<Reference Include="SharpGen.Runtime.COM">
+			<HintPath>$(YMM4DirPath)SharpGen.Runtime.COM.dll</HintPath>
+		</Reference>
+		<Reference Include="Vortice.Direct2D1">
+			<HintPath>$(YMM4DirPath)Vortice.Direct2D1.dll</HintPath>
+		</Reference>
+		<Reference Include="Vortice.DirectX">
+			<HintPath>$(YMM4DirPath)Vortice.DirectX.dll</HintPath>
+		</Reference>
+		<Reference Include="Vortice.Mathematics">
+			<HintPath>$(YMM4DirPath)Vortice.Mathematics.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+	<!--ビルド後にYMM4のプラグインフォルダにdllをコピーする-->
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(DeployToYMM4)' == 'true'">
+		<MakeDir Directories="$(YMM4PluginDirectory)" />
+		<Copy SourceFiles="$(TargetPath)" DestinationFolder="$(YMM4PluginDirectory)" />
+		<ItemGroup>
+			<_LocalizedResource Include="$(TargetDir)**\$(AssemblyName).resources.dll" />
+		</ItemGroup>
+		<Copy SourceFiles="@(_LocalizedResource)"
+		      DestinationFiles="@(_LocalizedResource->'$(YMM4PluginDirectory)\%(RecursiveDir)%(Filename)%(Extension)')" />
+	</Target>
+</Project>

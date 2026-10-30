@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ProportionalDrawingPlugin/ProportionalDrawingPlugin.csproj" />
+  <Project Path="YukkuriMovieMaker.Generator/YukkuriMovieMaker.Generator/YukkuriMovieMaker.Generator.csproj" />
+</Solution>
