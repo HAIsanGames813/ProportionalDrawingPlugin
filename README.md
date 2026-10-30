@@ -1,3 +1,5 @@
+<img width="1920" height="1080" alt="比率描画" src="https://github.com/user-attachments/assets/15802827-2c7f-465f-9779-d0aeef9bbc1f" />
+
 # 比率描画
 制作者:HAIsan
 
@@ -17,6 +19,7 @@
 MIT License  
 
 ---
+<img width="1920" height="1080" alt="ProportionalDrawing" src="https://github.com/user-attachments/assets/715e1bc4-ce57-4bb3-9e91-2e90454f9b58" />
 
 # Proportional Drawing
 Author: HAIsan
